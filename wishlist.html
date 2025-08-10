@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VEGEFOODS</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- ✅ Preload Hero Image -->
+  <link rel="preload" as="image" href="./veg1 (1).jpg">
+
+  <style>
+    .top-info-wrapper { position: fixed; top: 0; width: 100%; z-index: 9999; }
+    .top-info-bar {
+      background-color: #8cc152;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      width: 100%;
+      padding: 8px 0;
+    }
+    .info-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      gap: 20px;
+    }
+    .info-container i { margin-right: 8px; }
+
+    @media (max-width: 768px) {
+      .top-info-wrapper { display: none; }
+      .info-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 5px;
+      }
+      .top-info-bar { border-bottom: 3px solid white; }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body, html {
+      height: 100%;
+      font-family: 'Open Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    nav {
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 80px;
+      position: fixed;
+      width: 100%;
+      top: 32px;
+      background-color: white;
+      transition: all 0.3s ease-in-out;
+    }
+
+    nav.scrolled { background-color: white !important; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+    nav.scrolled .logo { color: black; }
+    nav.scrolled .logo span { color: orange; }
+    nav.scrolled .nav-links a { color: black !important; }
+    nav.scrolled .social-icons a { color: black !important; }
+
+    .logo {
+      font-size: 1.8rem;
+      font-family: 'Orbitron', sans-serif;
+      color: black;
+    }
+    .logo span { color: orange; }
+    .menu-toggle { display: none; font-size: 24px; color: black; cursor: pointer; z-index: 1001; }
+    .nav-links { list-style: none; display: flex; gap: 30px; align-items: center; position: relative; }
+    .nav-links>li { position: relative; }
+    .nav-links a { text-decoration: none; color: black; font-weight: 500; cursor: pointer; }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      padding: 10px 0;
+      list-style: none;
+      min-width: 150px;
+      z-index: 999;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .dropdown-menu::-webkit-scrollbar { width: 6px; }
+    .dropdown-menu::-webkit-scrollbar-thumb { background-color: orange; border-radius: 3px; }
+    .dropdown-menu li { padding: 10px 20px; }
+    .dropdown-menu li a { color: black; text-decoration: none; display: block; font-weight: 500; }
+    .dropdown-menu li a:hover { background-color: rgba(0, 0, 0, 0.05); }
+    .dropdown.show .dropdown-menu { display: block; }
+    .social-icons a { margin-left: 15px; color: white; }
+
+    .hero-section {
+      height: 70vh;
+      position: relative;
+      color: white;
+      text-align: center;
+      padding-top: 120px;
+      background-image: url('./veg1 (2).jpg'); /* ✅ Fixed single background */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.4);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 20px;
+      max-width: 800px;
+      margin: 100px auto 40px;
+      transition: opacity 0.5s ease;
+    }
+
+    .hero-content .slide { display: block; } /* Only one slide now */
+    .hero-content h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 48px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+      margin-bottom: 15px;
+    }
+    .hero-content p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #f0f0f0;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    .view-btn {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: orange;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      z-index: 2;
+      position: relative;
+    }
+    .view-btn:hover {
+      background-color: #ff8000;
+    }
+
+    @media (max-width: 991px) {
+      nav { padding: 20px 30px; }
+      .menu-toggle { display: block; 
+      color: white;}
+      #menu-toggle.hide { display: none !important; }
+      .nav-links {
+        flex-direction: column;
+        background-color: white;
+        position: fixed;
+        top: 0; right: -100%;
+        width: 260px; height: 100%;
+        padding: 60px 20px 20px;
+        transition: right 0.3s ease-in-out;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+      }
+      .nav-links.show { right: 0; }
+      .nav-close {
+        align-self: flex-end; font-size: 24px; color: #333; cursor: pointer;
+        margin-bottom: 20px; display: block;
+      }
+      .nav-links li { margin: 20px 0; }
+      .nav-links a { color: black; font-size: 18px; }
+      .dropdown-menu { position: absolute; top: 100%; left: 0; background-color: #f9f9f9; }
+      .dropdown-menu li a { color: #333; }
+      .dropdown-menu li a:hover { background-color: #eee; }
+      .dropdown-toggle i { color: black !important; }
+      .social-icons { display: flex; gap: 10px; margin-top: 30px; }
+      .social-icons a { color: #333; font-size: 18px; }
+    }
+
+    @media (min-width: 992px) { .nav-close { display: none; } }
+    @media (max-width: 768px) { nav { top: 0;
+    background-color: black; } 
+  .logo{
+    color: white;
+  }}
+  </style>
+</head>
+
+<body>
+  <!-- Top Info Bar -->
+  <div class="top-info-wrapper">
+    <div class="top-info-bar">
+      <div class="info-container">
+        <div><i class="fas fa-phone-alt"></i> + 1235 2355 98</div>
+        <div><i class="fas fa-paper-plane"></i> YOUREMAIL@EMAIL.COM</div>
+        <div>3–5 BUSINESS DAYS DELIVERY & FREE RETURNS</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="Home" style="position: absolute; top: 0;"></div>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="logo nav-click" onclick="document.getElementById('home').scrollIntoView({ behavior: 'smooth' });">
+      VEGEFOODS<span>.</span>
+    </div>
+
+    <div class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></div>
+
+    <ul class="nav-links" id="nav-links">
+      <span class="nav-close" id="nav-close"><i class="fas fa-xmark"></i></span>
+      <li><a href="copy.html" class="nav-click">Home</a></li>
+      <li class="dropdown" id="dropdown">
+        <a href="#" class="nav-click">Shop</a>
+        <span class="dropdown-toggle" id="dropdown-toggle" style="cursor: pointer; margin-left: 5px;">
+          <i class="fas fa-caret-down" style="font-size: 12px;"></i>
+        </span>
+         <ul class="dropdown-menu">
+          <li><a href="Shop.html">Shop</a></li>
+          <li><a href="Wishlist.html">Wishlist</a></li>
+          <li><a href="Product.html"> 1 Product</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="Checkout.html">Checkout</a></li>
+         
+        </ul>
+      </li>
+      <li><a href="Blog.html" class="nav-click">Blog</a></li>
+         <li><a href="about.html" class="nav-click">About</a></li>
+      <li><a href="contactus.html" class="nav-click">Contact</a></li>
+        <li><a href="cart.html" class="nav-click" title="Cart"><i class="fas fa-shopping-cart" style="color: green;"></i></a></li>
+
+      <li class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section" id="home">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <div class="slide">
+         <p>Home Wishlist</p>
+        <h1>My Wishlist</h1>
+       
+      </div>
+      <!-- ✅ View Details Button -->
+      <a href="#about" class="view-btn">View Details</a>
+    </div>
+  </section>
+
+  <script>
+    // Nav toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    const navClose = document.getElementById('nav-close');
+    const dropdown = document.getElementById('dropdown');
+    const dropdownToggle = document.getElementById('dropdown-toggle');
+
+    menuToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      navLinks.classList.add('show');
+      menuToggle.classList.add('hide');
+    });
+    navClose.addEventListener('click', function () {
+      navLinks.classList.remove('show');
+      menuToggle.classList.remove('hide');
+    });
+    dropdownToggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropdown.classList.toggle('show');
+    });
+    document.addEventListener('click', function (e) {
+      if (!dropdown.contains(e.target)) dropdown.classList.remove('show');
+      if (navLinks.classList.contains('show') && !navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+        navLinks.classList.remove('show');
+        menuToggle.classList.remove('hide');
+      }
+    });
+    window.addEventListener('scroll', function () {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    });
+  </script>
+
+  <section style="font-family: Arial, sans-serif; padding: 20px; display: flex; justify-content: center;">
+  <style>
+    .cart-wrapper {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .cart-table thead {
+      background-color: #8bb34b;
+      color: white;
+      text-align: left;
+    }
+
+    .cart-table th, .cart-table td {
+      padding: 15px;
+      vertical-align: middle;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .remove-btn {
+      border: none;
+      background: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .cart-quantity {
+      width: 60px;
+      text-align: center;
+      padding: 5px;
+      border: 1px solid #ddd;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-desc {
+      color: #777;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    /* ✅ Animation keyframes */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Animation class */
+.animate-fadeUp {
+  opacity: 0;
+  animation: fadeUp 0.8s ease-out forwards;
+}
+
+  </style>
+
+  <div class="cart-wrapper">
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Product List</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="cart-item">
+              <button class="remove-btn">&times;</button>
+              <img src="imgi_1_product-1 (1).jpg" alt="Bell Pepper">
+              <div>
+                <strong>Bell Pepper</strong>
+                <div class="cart-desc">Far far away, behind the word mountains, far from the countries</div>
+              </div>
+            </div>
+          </td>
+          <td>$4.90</td>
+          <td><input type="number" class="cart-quantity" value="1"></td>
+          <td>$4.90</td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="cart-item">
+              <button class="remove-btn">&times;</button>
+              <img src="Fruits.jpg" alt="Bell Pepper">
+              <div>
+                <strong>Bell Pepper</strong>
+                <div class="cart-desc">Far far away, behind the word mountains, far from the countries</div>
+              </div>
+            </div>
+          </td>
+          <td>$15.70</td>
+          <td><input type="number" class="cart-quantity" value="1"></td>
+          <td>$15.70</td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="cart-item">
+              <button class="remove-btn">&times;</button>
+              <img src="imgi_12_product-12.jpg" alt="Bell Pepper">
+              <div>
+                <strong>Bell Pepper</strong>
+                <div class="cart-desc">Far far away, behind the word mountains, far from the countries</div>
+              </div>
+            </div>
+          </td>
+          <td>$15.70</td>
+          <td><input type="number" class="cart-quantity" value="1"></td>
+          <td>$15.70</td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="cart-item">
+              <button class="remove-btn">&times;</button>
+              <img src="imgi_10_product-10 (1).jpg" alt="Bell Pepper">
+              <div>
+                <strong>Bell Pepper</strong>
+                <div class="cart-desc">Far far away, behind the word mountains, far from the countries</div>
+              </div>
+            </div>
+          </td>
+          <td>$15.70</td>
+          <td><input type="number" class="cart-quantity" value="1"></td>
+          <td>$15.70</td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="cart-item">
+              <button class="remove-btn">&times;</button>
+              <img src="straw (2).jpg" alt="Bell Pepper">
+              <div>
+                <strong>Bell Pepper</strong>
+                <div class="cart-desc">Far far away, behind the word mountains, far from the countries</div>
+              </div>
+            </div>
+          </td>
+          <td>$15.70</td>
+          <td><input type="number" class="cart-quantity" value="1"></td>
+          <td>$15.70</td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="cart-item">
+              <button class="remove-btn">&times;</button>
+              <img src="straw (3).jpg" alt="Bell Pepper">
+              <div>
+                <strong>Bell Pepper</strong>
+                <div class="cart-desc">Far far away, behind the word mountains, far from the countries</div>
+              </div>
+            </div>
+          </td>
+          <td>$15.70</td>
+          <td><input type="number" class="cart-quantity" value="1"></td>
+          <td>$15.70</td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="cart-item">
+              <button class="remove-btn">&times;</button>
+              <img src="straw (4).jpg" alt="Bell Pepper">
+              <div>
+                <strong>Bell Pepper</strong>
+                <div class="cart-desc">Far far away, behind the word mountains, far from the countries</div>
+              </div>
+            </div>
+          </td>
+          <td>$15.70</td>
+          <td><input type="number" class="cart-quantity" value="1"></td>
+          <td>$15.70</td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="cart-item">
+              <button class="remove-btn">&times;</button>
+              <img src="straw (5).jpg" alt="Bell Pepper">
+              <div>
+                <strong>Bell Pepper</strong>
+                <div class="cart-desc">Far far away, behind the word mountains, far from the countries</div>
+              </div>
+            </div>
+          </td>
+          <td>$15.70</td>
+          <td><input type="number" class="cart-quantity" value="1"></td>
+          <td>$15.70</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="newsletter">
+  <div class="newsletter-container">
+    <div class="newsletter-text">
+      <h5>Subscribe to our Newsletter</h5>
+      <p>Get e-mail updates about our latest shops and special offers</p>
+    </div>
+    <form class="newsletter-form">
+      <input type="email" placeholder="Enter email address" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<section class="footer">
+  <a href="#" class="scroll-top-btn">↑</a>
+  <div class="footer-container">
+    <div class="footer-col">
+      <h6>Vegefoods</h6>
+      <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h6>Menu</h6>
+      <a href="#">Shop</a>
+      <a href="#">About</a>
+      <a href="#">Journal</a>
+      <a href="#">Contact Us</a>
+    </div>
+
+    <div class="footer-col">
+      <h6>Help</h6>
+      <a href="#">Shipping Information</a>
+      <a href="#">Returns & Exchange</a>
+      <a href="#">Terms & Conditions</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">FAQs</a>
+      <a href="#">Contact</a>
+    </div>
+
+    <div class="footer-col">
+      <h6>Have a Questions?</h6>
+      <p><i class="fas fa-map-marker-alt"></i> 203 Fake St. Mountain View, San Francisco, California, USA</p>
+      <p><i class="fas fa-phone"></i> +2 392 3929 210</p>
+      <p><i class="fas fa-envelope"></i> info@yourdomain.com</p>
+    </div>
+  </div>
+  <p class="footer-credit">
+    Copyright ©2025 All rights reserved |
+    <span>❤</span> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  </p>
+</section>
+
+<style>
+/* Newsletter Section */
+.newsletter {
+  background-color: #f9f8f4;
+  padding: 60px 20px;
+}
+.newsletter-container {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+.newsletter-text {
+  flex: 1;
+}
+.newsletter-text h5 {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.newsletter-text p {
+  margin: 0;
+  color: #777;
+}
+.newsletter-form {
+  display: flex;
+}
+.newsletter-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  flex: 1;
+}
+.newsletter-form button {
+  background-color: #8bc34a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  background-color: #fff;
+  padding: 80px 20px 40px;
+  position: relative;
+  text-align: center;
+}
+.footer-container {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  text-align: left;
+}
+.footer-col h6 {
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.footer-col p, .footer-col a {
+  color: #555;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 8px;
+}
+.footer-col a:hover {
+  color: #8bc34a;
+}
+.social-links a {
+  display: inline-block;
+  margin-right: 10px;
+  color: #555;
+  background: #f0f0f0;
+  padding: 8px;
+  border-radius: 50%;
+}
+.footer-credit {
+  margin-top: 30px;
+  color: #777;
+}
+.footer-credit span {
+  color: red;
+}
+
+/* Scroll to Top Button */
+.scroll-top-btn {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: #4caf50;
+  color: white;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  animation: bounceMove 1.5s infinite;
+}
+@keyframes bounceMove {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translate(-50%, 0);
+  }
+  40% {
+    transform: translate(-50%, -10px);
+  }
+  60% {
+    transform: translate(-50%, -5px);
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .newsletter-container {
+    flex-direction: column;
+  }
+  .newsletter-form {
+    width: 100%;
+  }
+  .newsletter-form input {
+    flex: 1;
+  }
+}
+</style>
+
+<script>
+document.querySelector('.scroll-top-btn').addEventListener('click', function(e) {
+  e.preventDefault();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate-fadeUp");
+          observer.unobserve(entry.target); // Run once
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  // Apply animation to blog posts, sidebar, and footer columns
+  document.querySelectorAll(
+    "#blog-wrapper .row.mb-5, #blog-wrapper .col-lg-4 > div, .footer-col"
+  ).forEach(el => observer.observe(el));
+});
+</script>
+
+</body>
+</html>
+
